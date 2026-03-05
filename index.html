@@ -11,11 +11,14 @@
   <button id="bonjour-btn">Afficher le message</button>
   <p id="bravo-message" style="display: none;">Bravo Hedayat !</p>
   <button id="cacher-btn" style="display: none;">Cacher le message</button>
+  <button id="fond-btn">Changer la couleur de fond</button>
 
   <script>
+    const pageBody = document.body;
     const bonjourBtn = document.getElementById("bonjour-btn");
     const bravoMessage = document.getElementById("bravo-message");
     const cacherBtn = document.getElementById("cacher-btn");
+    const fondBtn = document.getElementById("fond-btn");
 
     bonjourBtn.addEventListener("click", function () {
       bravoMessage.style.display = "block";
@@ -25,6 +28,14 @@
     cacherBtn.addEventListener("click", function () {
       bravoMessage.style.display = "none";
       cacherBtn.style.display = "none";
+    });
+
+    fondBtn.addEventListener("click", function () {
+      if (pageBody.style.backgroundColor === "lightblue") {
+        pageBody.style.backgroundColor = "white";
+      } else {
+        pageBody.style.backgroundColor = "lightblue";
+      }
     });
   </script>
 </body>
