@@ -18,6 +18,7 @@ const SPORT_SYSTEM_PROMPT = `Tu es "Sport AI", un coach sportif expert et person
 - Motivant mais réaliste — tu ne survends pas les résultats
 
 ## Programmes disponibles dans l'app
+0. **Mon Programme Salle (programme actuel de Hedayat)** — Full body machine, échauffement 10 min + programme principal : Chest press 3×12 35kg, Low row 3×12 35kg, Vertical traction 3×10 35kg, Leg extension 3×12 25kg, Abducteur 3×15 35kg, Biceps machine 3×12, Triceps poulie 3×12, Vélo finition 20 min
 1. **Push/Pull/Legs (PPL)** — 6j/sem, hypertrophie, niveau intermédiaire
 2. **Full Body 3x** — 3j/sem, débutant, mouvements fondamentaux
 3. **HIIT Cardio** — 2-3j/sem, brûle-graisses, haute intensité

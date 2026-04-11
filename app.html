@@ -641,6 +641,29 @@ const DB = {
 // ============================================================
 const DEFAULT_PROGRAMS = [
   {
+    id: 'hedayat-salle', name: 'Mon Programme Salle', difficulty: 'medium', tags: ['Musculation', 'Full Body'],
+    desc: 'Programme personnalisé de Hedayat — Full body machine + cardio finition.',
+    days: [
+      { name: 'Échauffement (10 min)', exercises: [
+        { name: 'Vélo léger', sets: 1, reps: '5 min', unit: '', rest: 0 },
+        { name: 'Bird dog', sets: 2, reps: '10/côté', unit: '', rest: 0 },
+        { name: 'Dead bug', sets: 2, reps: '8/côté', unit: '', rest: 0 },
+        { name: 'Glute bridge', sets: 2, reps: '12', unit: '', rest: 0 },
+        { name: 'Mobilité hanches', sets: 1, reps: '30s/côté', unit: '', rest: 0 },
+      ]},
+      { name: 'Programme principal', exercises: [
+        { name: 'Chest press', sets: 3, reps: '12', unit: 'kg', rest: 90, defaultWeight: 35 },
+        { name: 'Low row', sets: 3, reps: '12', unit: 'kg', rest: 90, defaultWeight: 35 },
+        { name: 'Vertical traction', sets: 3, reps: '10', unit: 'kg', rest: 90, defaultWeight: 35 },
+        { name: 'Leg extension', sets: 3, reps: '12', unit: 'kg', rest: 90, defaultWeight: 25 },
+        { name: 'Abducteur', sets: 3, reps: '15', unit: 'kg', rest: 60, defaultWeight: 35 },
+        { name: 'Biceps machine', sets: 3, reps: '12', unit: 'kg', rest: 60 },
+        { name: 'Triceps poulie', sets: 3, reps: '12', unit: 'kg', rest: 60 },
+        { name: 'Vélo finition', sets: 1, reps: '20 min', unit: '', rest: 0 },
+      ]},
+    ]
+  },
+  {
     id: 'ppl', name: 'Push / Pull / Legs', difficulty: 'medium', tags: ['Musculation', '6j/sem'],
     desc: 'Programme splits classique pour hypertrophie maximale.',
     days: [
@@ -1038,14 +1061,14 @@ function buildWkCard(ex, ei, total) {
     kgWrap.className = 'wk-kg';
     // Pre-fill with last used weight if available
     const lastWeight = getLastWeight(ex.name);
-    kgWrap.innerHTML = `<input type="number" placeholder="${lastWeight || '0'}" id="wk-weight-${ei}" min="0" step="0.5" /><span class="wk-kg-unit">kg</span>`;
+    kgWrap.innerHTML = `<input type="number" placeholder="${lastWeight || ex.defaultWeight || '0'}" id="wk-weight-${ei}" min="0" step="0.5" /><span class="wk-kg-unit">kg</span>`;
     right.appendChild(kgWrap);
   }
 
   if (ex.sets > 0) {
     const dots = document.createElement('div');
     dots.className = 'wk-dots';
-    const restSec = ex.unit === 's' ? 30 : 90; // default rest
+    const restSec = ex.rest !== undefined ? ex.rest : (ex.unit === 's' ? 30 : 90);
     for (let si = 0; si < ex.sets; si++) {
       const d = document.createElement('div');
       d.className = 'wk-d';
@@ -1065,7 +1088,7 @@ function buildWkCard(ex, ei, total) {
 
   // Timer bar
   if (ex.sets > 0) {
-    const restSec = ex.unit === 's' ? 30 : 90;
+    const restSec = ex.rest !== undefined ? ex.rest : (ex.unit === 's' ? 30 : 90);
     const tb = document.createElement('div');
     tb.className = 'wk-tbar';
     tb.id = 'wktb-' + id;
