@@ -171,6 +171,10 @@
     .wk-info { flex:1; min-width:0; }
     .wk-nm { font-size:15px; font-weight:600; color:var(--text); }
     .wk-sb { font-size:12px; color:var(--muted); margin-top:2px; }
+    .wk-sb-edit { display:flex; align-items:center; gap:2px; flex-wrap:wrap; }
+    .wk-edit-sets { width:32px; font-size:12px; font-weight:600; color:var(--accent); background:var(--surface2); border:1px solid var(--border); border-radius:4px; padding:1px 4px; text-align:center; }
+    .wk-edit-reps { width:40px; font-size:12px; font-weight:600; color:var(--accent); background:var(--surface2); border:1px solid var(--border); border-radius:4px; padding:1px 4px; text-align:center; }
+    .wk-edit-sep, .wk-edit-unit { font-size:12px; color:var(--muted); }
     .wk-right { display:flex; flex-direction:column; align-items:flex-end; gap:8px; flex-shrink:0; }
     .wk-kg { display:flex; align-items:center; gap:6px; }
     .wk-kg input { width:70px; text-align:right; font-size:13px; padding:4px 8px; background:var(--surface); border:1px solid var(--border); border-radius:6px; color:var(--text); }
@@ -1047,7 +1051,18 @@ function buildWkCard(ex, ei, total) {
   // Info
   const info = document.createElement('div');
   info.className = 'wk-info';
-  info.innerHTML = `<div class="wk-nm">${ex.name}</div><div class="wk-sb">${ex.sets} séries · ${ex.reps}${ex.unit === 'kg' ? ' reps' : ex.unit ? ' ' + ex.unit : ''}</div>`;
+  const nm = document.createElement('div');
+  nm.className = 'wk-nm';
+  nm.textContent = ex.name;
+  const sb = document.createElement('div');
+  sb.className = 'wk-sb wk-sb-edit';
+  const unitLabel = ex.unit === 'kg' ? ' reps' : (ex.unit ? ' ' + ex.unit : '');
+  sb.innerHTML = `<input type="number" class="wk-edit-sets" value="${ex.sets}" min="1" max="10" title="Séries" />
+    <span class="wk-edit-sep"> séries · </span>
+    <input type="text" class="wk-edit-reps" value="${ex.reps}" title="Reps" />
+    <span class="wk-edit-unit">${unitLabel}</span>`;
+  info.appendChild(nm);
+  info.appendChild(sb);
 
   row.appendChild(chk);
   row.appendChild(info);
@@ -1059,17 +1074,20 @@ function buildWkCard(ex, ei, total) {
   if (ex.unit === 'kg' || ex.unit === '') {
     const kgWrap = document.createElement('div');
     kgWrap.className = 'wk-kg';
-    // Pre-fill with last used weight if available
     const lastWeight = getLastWeight(ex.name);
     kgWrap.innerHTML = `<input type="number" placeholder="${lastWeight || ex.defaultWeight || '0'}" id="wk-weight-${ei}" min="0" step="0.5" /><span class="wk-kg-unit">kg</span>`;
     right.appendChild(kgWrap);
   }
 
-  if (ex.sets > 0) {
-    const dots = document.createElement('div');
-    dots.className = 'wk-dots';
-    const restSec = ex.rest !== undefined ? ex.rest : (ex.unit === 's' ? 30 : 90);
-    for (let si = 0; si < ex.sets; si++) {
+  const restSec = ex.rest !== undefined ? ex.rest : (ex.unit === 's' ? 30 : 90);
+
+  const dots = document.createElement('div');
+  dots.className = 'wk-dots';
+  dots.id = 'wk-dots-' + ei;
+
+  function buildDots(count) {
+    dots.innerHTML = '';
+    for (let si = 0; si < count; si++) {
       const d = document.createElement('div');
       d.className = 'wk-d';
       d.textContent = si + 1;
@@ -1080,8 +1098,24 @@ function buildWkCard(ex, ei, total) {
       };
       dots.appendChild(d);
     }
+  }
+
+  if (ex.sets > 0) {
+    buildDots(ex.sets);
     right.appendChild(dots);
   }
+
+  // Update dots when sets input changes
+  const setsInput = sb.querySelector('.wk-edit-sets');
+  setsInput.addEventListener('change', (e) => {
+    e.stopPropagation();
+    const n = Math.max(1, Math.min(10, parseInt(e.target.value) || 1));
+    e.target.value = n;
+    buildDots(n);
+    if (!dots.parentNode) right.appendChild(dots);
+  });
+  setsInput.addEventListener('click', e => e.stopPropagation());
+  sb.querySelector('.wk-edit-reps').addEventListener('click', e => e.stopPropagation());
 
   row.appendChild(right);
   card.appendChild(row);
@@ -1184,9 +1218,13 @@ function saveWorkoutInline() {
   const exercises = day.exercises.map((ex, ei) => {
     const weight = parseFloat(document.getElementById(`wk-weight-${ei}`)?.value) || 0;
     const doneCount = document.querySelectorAll(`#wkcard-${ei} .wk-d.on`).length;
-    const sets = Array.from({ length: ex.sets }, (_, si) => {
+    const setsInput = document.querySelector(`#wkcard-${ei} .wk-edit-sets`);
+    const repsInput = document.querySelector(`#wkcard-${ei} .wk-edit-reps`);
+    const setsCount = setsInput ? (parseInt(setsInput.value) || ex.sets) : ex.sets;
+    const repsVal = repsInput ? repsInput.value : ex.reps;
+    const sets = Array.from({ length: setsCount }, (_, si) => {
       const done = si < doneCount;
-      const reps = parseInt(ex.reps) || 0;
+      const reps = parseInt(repsVal) || 0;
       totalVolume += done ? reps * weight : 0;
       return { reps, weight, rpe: 0, done };
     });
