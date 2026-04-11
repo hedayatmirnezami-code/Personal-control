@@ -6,6 +6,9 @@ const app = express();
 app.use(express.json({ limit: '10mb' }));
 app.use(express.static(path.join(__dirname)));
 
+// Redirect /app → /app.html for Chrome compatibility
+app.get('/app', (req, res) => res.redirect('/app.html'));
+
 // ============================================================
 //  SYSTÈME PROMPT — PROJET "SPORT"
 // ============================================================
