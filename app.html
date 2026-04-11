@@ -17,9 +17,41 @@
       --text: #e8eaf6;
       --muted: #8892b0;
       --radius: 14px;
+      --shadow: 0 1px 3px rgba(0,0,0,0.4);
+    }
+    html.light {
+      --bg: #f4f6fb;
+      --surface: #ffffff;
+      --surface2: #eef1f8;
+      --border: #dde1ef;
+      --accent: #5b54e8;
+      --accent2: #e8405f;
+      --green: #1db954;
+      --yellow: #e6a817;
+      --text: #1a1d2e;
+      --muted: #6b728e;
+      --shadow: 0 1px 4px rgba(0,0,0,0.08);
     }
     * { box-sizing: border-box; margin: 0; padding: 0; }
     body { background: var(--bg); color: var(--text); font-family: 'Segoe UI', system-ui, sans-serif; display: flex; min-height: 100vh; }
+
+    /* THEME TOGGLE */
+    .theme-toggle { display:flex; align-items:center; justify-content:space-between; padding:10px 20px; margin-bottom:8px; }
+    .theme-toggle-label { font-size:0.78rem; color:var(--muted); }
+    .toggle-switch { position:relative; width:44px; height:24px; cursor:pointer; }
+    .toggle-switch input { opacity:0; width:0; height:0; }
+    .toggle-track { position:absolute; inset:0; background:var(--surface2); border:1px solid var(--border); border-radius:12px; transition:all 0.2s; }
+    .toggle-thumb { position:absolute; top:3px; left:3px; width:16px; height:16px; background:var(--muted); border-radius:50%; transition:all 0.2s; font-size:10px; display:flex; align-items:center; justify-content:center; }
+    input:checked + .toggle-track { background:var(--accent); border-color:var(--accent); }
+    input:checked + .toggle-track + .toggle-thumb { transform:translateX(20px); background:#fff; }
+
+    /* LIGHT MODE OVERRIDES */
+    html.light .sidebar { border-right-color:var(--border); box-shadow: 1px 0 8px rgba(0,0,0,0.06); }
+    html.light .card, html.light .section, html.light .program-card { box-shadow: var(--shadow); }
+    html.light .modal { box-shadow: 0 8px 32px rgba(0,0,0,0.15); }
+    html.light input, html.light select, html.light textarea { background:var(--surface2); }
+    html.light .wk-card { box-shadow: var(--shadow); }
+    html.light table tr:hover td { background:var(--surface2); }
 
     /* SIDEBAR */
     .sidebar {
@@ -125,6 +157,39 @@
     /* PROGRESS BAR */
     .progress-bar-wrap { background: var(--surface2); border-radius: 6px; height: 8px; overflow: hidden; margin-top: 8px; }
     .progress-bar { height: 100%; border-radius: 6px; background: linear-gradient(90deg, var(--accent), #a78bfa); transition: width 0.5s; }
+
+    /* WORKOUT CARDS (style workout_maison) */
+    .wk-badge { font-size:12px; padding:4px 12px; border-radius:20px; background:#6c63ff22; color:var(--accent); display:inline-block; margin-bottom:14px; font-weight:500; }
+    .wk-sec { font-size:11px; color:var(--muted); text-transform:uppercase; letter-spacing:.06em; margin:16px 0 6px; font-weight:500; }
+    .wk-card { border:0.5px solid var(--border); border-radius:14px; margin-bottom:8px; overflow:hidden; background:var(--surface2); transition:opacity 0.2s; }
+    .wk-card.done { opacity:0.4; }
+    .wk-row { display:flex; align-items:center; padding:14px; gap:12px; }
+    .wk-chk { width:32px; height:32px; min-width:32px; border-radius:50%; border:2px solid var(--border); display:flex; align-items:center; justify-content:center; cursor:pointer; background:transparent; transition:all 0.15s; flex-shrink:0; }
+    .wk-chk.on { background:var(--green); border-color:var(--green); }
+    .wk-tick { display:none; color:#0f1117; font-size:14px; font-weight:700; }
+    .wk-chk.on .wk-tick { display:block; }
+    .wk-info { flex:1; min-width:0; }
+    .wk-nm { font-size:15px; font-weight:600; color:var(--text); }
+    .wk-sb { font-size:12px; color:var(--muted); margin-top:2px; }
+    .wk-right { display:flex; flex-direction:column; align-items:flex-end; gap:8px; flex-shrink:0; }
+    .wk-kg { display:flex; align-items:center; gap:6px; }
+    .wk-kg input { width:70px; text-align:right; font-size:13px; padding:4px 8px; background:var(--surface); border:1px solid var(--border); border-radius:6px; color:var(--text); }
+    .wk-kg-unit { font-size:12px; color:var(--muted); }
+    .wk-dots { display:flex; gap:8px; }
+    .wk-d { width:40px; height:40px; border-radius:50%; border:2px solid var(--border); font-size:14px; font-weight:600; color:var(--muted); display:flex; align-items:center; justify-content:center; cursor:pointer; background:transparent; transition:all 0.15s; }
+    .wk-d.on { background:var(--accent); border-color:var(--accent); color:#fff; }
+    .wk-tbar { display:none; border-top:0.5px solid var(--border); background:var(--surface); padding:12px 14px; align-items:center; gap:12px; }
+    .wk-tbar.show { display:flex; }
+    .wk-tnum { font-size:28px; font-weight:600; min-width:60px; color:var(--text); font-variant-numeric:tabular-nums; }
+    .wk-tnum.run { color:var(--green); }
+    .wk-tnum.end { color:var(--muted); }
+    .wk-prog { flex:1; height:5px; background:var(--border); border-radius:3px; overflow:hidden; }
+    .wk-fill { height:100%; background:var(--green); border-radius:3px; transition:width 0.9s linear; }
+    .wk-btn { height:38px; min-width:52px; padding:0 14px; font-size:13px; border-radius:20px; border:0.5px solid var(--border); background:transparent; color:var(--text); cursor:pointer; transition:all 0.15s; }
+    .wk-btn:hover { border-color:var(--accent); color:var(--accent); }
+    .wk-sum { background:var(--surface2); border:1px solid var(--border); border-radius:12px; padding:14px 18px; display:flex; justify-content:space-between; align-items:center; margin:16px 0; }
+    .wk-sum-label { font-size:13px; color:var(--muted); }
+    .wk-sum-val { font-size:20px; font-weight:700; color:var(--text); }
 
     /* CHART */
     .chart-container { position: relative; height: 200px; margin-top: 8px; }
@@ -240,7 +305,15 @@
     <span class="nav-badge">Bientôt</span>
   </div>
   <div class="sidebar-bottom">
-    <p>v1.0 — Hedayat</p>
+    <div class="theme-toggle">
+      <span class="theme-toggle-label" id="theme-label">🌙 Sombre</span>
+      <label class="toggle-switch">
+        <input type="checkbox" id="theme-toggle-input" onchange="toggleTheme(this)" />
+        <div class="toggle-track"></div>
+        <div class="toggle-thumb"></div>
+      </label>
+    </div>
+    <p style="padding:0 4px;">v1.0 — Hedayat</p>
   </div>
 </nav>
 
@@ -299,7 +372,36 @@
 
     <!-- SÉANCE DU JOUR -->
     <div id="sport-tab-seance" style="display:none">
-      <div id="seance-content"></div>
+      <!-- Sélection du jour -->
+      <div id="seance-list-view">
+        <div id="seance-content"></div>
+      </div>
+      <!-- Vue workout cards (style workout_maison) -->
+      <div id="seance-workout-view" style="display:none;">
+        <div style="display:flex; align-items:center; gap:14px; margin-bottom:18px;">
+          <button class="btn btn-secondary btn-sm" onclick="backToSeanceList()">← Retour</button>
+          <div>
+            <strong id="wk-day-title" style="font-size:1.1rem;"></strong>
+            <span id="wk-prog-name" style="color:var(--muted); font-size:0.82rem; margin-left:8px;"></span>
+          </div>
+        </div>
+        <span class="wk-badge" id="wk-badge-label"></span>
+        <div id="wk-exercises-container"></div>
+        <div class="wk-sum">
+          <span class="wk-sum-label">Exercices complétés</span>
+          <span class="wk-sum-val"><span id="wk-done">0</span>&thinsp;/&thinsp;<span id="wk-total">0</span></span>
+        </div>
+        <div class="section" style="padding:16px;">
+          <div class="form-row">
+            <div class="form-group"><label>Date</label><input type="date" id="wk-date" /></div>
+            <div class="form-group"><label>Durée (min)</label><input type="number" id="wk-duration" placeholder="Ex: 60" /></div>
+            <div class="form-group"><label>Note / ressenti</label><input type="text" id="wk-note" placeholder="Ex: Très bonne séance !" /></div>
+          </div>
+          <div style="display:flex; justify-content:flex-end; margin-top:4px;">
+            <button class="btn btn-green" onclick="saveWorkoutInline()">✓ Terminer &amp; Sauvegarder</button>
+          </div>
+        </div>
+      </div>
     </div>
 
     <!-- HISTORIQUE -->
@@ -361,7 +463,39 @@
       ⚠️ Clé API manquante. Lance le serveur avec : <code style="background:var(--surface2); padding:2px 6px; border-radius:4px;">ANTHROPIC_API_KEY=sk-... node server.js</code>
     </div>
 
-    <div style="display:grid; grid-template-columns: 1fr 280px; gap:20px; height:calc(100vh - 200px);">
+    <div style="display:grid; grid-template-columns: 280px 1fr; gap:20px; height:calc(100vh - 200px);">
+
+      <!-- PANNEAU GAUCHE -->
+      <div style="display:flex; flex-direction:column; gap:16px; overflow-y:auto;">
+
+        <!-- SUGGESTIONS RAPIDES -->
+        <div class="section">
+          <div class="section-title">⚡ Actions rapides</div>
+          <div style="display:flex; flex-direction:column; gap:8px;">
+            <button class="btn btn-secondary" style="text-align:left; justify-content:flex-start; font-size:0.82rem;" onclick="sendQuickMessage('Analyse mes dernières séances et dis-moi comment j\'évolue.')">📊 Analyser ma progression</button>
+            <button class="btn btn-secondary" style="text-align:left; justify-content:flex-start; font-size:0.82rem;" onclick="sendQuickMessage('Quel programme me recommandes-tu en ce moment selon mes données ?')">🏋️ Quel programme choisir ?</button>
+            <button class="btn btn-secondary" style="text-align:left; justify-content:flex-start; font-size:0.82rem;" onclick="sendQuickMessage('Donne-moi un plan de récupération optimale pour cette semaine.')">😴 Plan de récupération</button>
+            <button class="btn btn-secondary" style="text-align:left; justify-content:flex-start; font-size:0.82rem;" onclick="sendQuickMessage('Comment optimiser ma nutrition pour mes entraînements ?')">🥗 Nutrition sportive</button>
+            <button class="btn btn-secondary" style="text-align:left; justify-content:flex-start; font-size:0.82rem;" onclick="sendQuickMessage('Estime mon 1RM sur les exercices principaux d\'après mes séances.')">💯 Calculer mon 1RM</button>
+            <button class="btn btn-secondary" style="text-align:left; justify-content:flex-start; font-size:0.82rem;" onclick="sendQuickMessage('Donne-moi un échauffement complet avant ma séance.')">🔥 Routine d\'échauffement</button>
+          </div>
+        </div>
+
+        <!-- INFOS CONTEXTE -->
+        <div class="section">
+          <div class="section-title">📋 Contexte envoyé</div>
+          <div id="coach-context-preview" style="font-size:0.78rem; color:var(--muted); line-height:1.6;"></div>
+        </div>
+
+        <!-- HISTORIQUE SESSION -->
+        <div class="section">
+          <div class="section-title">💬 Session</div>
+          <div id="coach-session-info" style="font-size:0.78rem; color:var(--muted);">
+            <span id="coach-msg-count">0 messages</span><br>
+            <span id="coach-token-est"></span>
+          </div>
+        </div>
+      </div>
 
       <!-- CHAT -->
       <div class="section" style="display:flex; flex-direction:column; padding:0; overflow:hidden;">
@@ -409,37 +543,6 @@
         </div>
       </div>
 
-      <!-- PANNEAU DROIT -->
-      <div style="display:flex; flex-direction:column; gap:16px; overflow-y:auto;">
-
-        <!-- SUGGESTIONS RAPIDES -->
-        <div class="section">
-          <div class="section-title">⚡ Actions rapides</div>
-          <div style="display:flex; flex-direction:column; gap:8px;">
-            <button class="btn btn-secondary" style="text-align:left; justify-content:flex-start; font-size:0.82rem;" onclick="sendQuickMessage('Analyse mes dernières séances et dis-moi comment j\'évolue.')">📊 Analyser ma progression</button>
-            <button class="btn btn-secondary" style="text-align:left; justify-content:flex-start; font-size:0.82rem;" onclick="sendQuickMessage('Quel programme me recommandes-tu en ce moment selon mes données ?')">🏋️ Quel programme choisir ?</button>
-            <button class="btn btn-secondary" style="text-align:left; justify-content:flex-start; font-size:0.82rem;" onclick="sendQuickMessage('Donne-moi un plan de récupération optimale pour cette semaine.')">😴 Plan de récupération</button>
-            <button class="btn btn-secondary" style="text-align:left; justify-content:flex-start; font-size:0.82rem;" onclick="sendQuickMessage('Comment optimiser ma nutrition pour mes entraînements ?')">🥗 Nutrition sportive</button>
-            <button class="btn btn-secondary" style="text-align:left; justify-content:flex-start; font-size:0.82rem;" onclick="sendQuickMessage('Estime mon 1RM sur les exercices principaux d\'après mes séances.')">💯 Calculer mon 1RM</button>
-            <button class="btn btn-secondary" style="text-align:left; justify-content:flex-start; font-size:0.82rem;" onclick="sendQuickMessage('Donne-moi un échauffement complet avant ma séance.')">🔥 Routine d\'échauffement</button>
-          </div>
-        </div>
-
-        <!-- INFOS CONTEXTE -->
-        <div class="section">
-          <div class="section-title">📋 Contexte envoyé</div>
-          <div id="coach-context-preview" style="font-size:0.78rem; color:var(--muted); line-height:1.6;"></div>
-        </div>
-
-        <!-- HISTORIQUE SESSION -->
-        <div class="section">
-          <div class="section-title">💬 Session</div>
-          <div id="coach-session-info" style="font-size:0.78rem; color:var(--muted);">
-            <span id="coach-msg-count">0 messages</span><br>
-            <span id="coach-token-est"></span>
-          </div>
-        </div>
-      </div>
     </div>
   </div>
 
@@ -865,11 +968,231 @@ function activateProgram(id) {
 }
 
 // ============================================================
+//  WORKOUT INLINE VIEW (style workout_maison)
+// ============================================================
+let wkState = { programId: null, dayIndex: null, timers: {} };
+
+function startWorkoutInline(programId, dayIndex) {
+  const prog = getAllPrograms().find(p => p.id === programId) || getActiveProgram();
+  if (!prog) return;
+  const day = prog.days[dayIndex];
+  wkState = { programId: prog.id, dayName: day.name, programName: prog.name, dayIndex, timers: {} };
+
+  document.getElementById('wk-day-title').textContent = day.name;
+  document.getElementById('wk-prog-name').textContent = prog.name;
+  document.getElementById('wk-badge-label').textContent = `${prog.name} · ${day.name}`;
+  document.getElementById('wk-date').value = new Date().toISOString().split('T')[0];
+  document.getElementById('wk-duration').value = '';
+  document.getElementById('wk-note').value = '';
+
+  const container = document.getElementById('wk-exercises-container');
+  container.innerHTML = '';
+
+  // Group into sections (warm-up if first item has no weight, else all "Programme")
+  const sections = [{ label: 'Exercices', items: day.exercises }];
+  sections.forEach(sec => {
+    const secLabel = document.createElement('div');
+    secLabel.className = 'wk-sec';
+    secLabel.textContent = sec.label;
+    container.appendChild(secLabel);
+    sec.items.forEach((ex, ei) => {
+      container.appendChild(buildWkCard(ex, ei, day.exercises.length));
+    });
+  });
+
+  updateWkSummary();
+  document.getElementById('seance-list-view').style.display = 'none';
+  document.getElementById('seance-workout-view').style.display = 'block';
+}
+
+function buildWkCard(ex, ei, total) {
+  const id = 'wk-' + ei;
+  const card = document.createElement('div');
+  card.className = 'wk-card';
+  card.id = 'wkcard-' + ei;
+
+  // Row
+  const row = document.createElement('div');
+  row.className = 'wk-row';
+
+  // Checkbox
+  const chk = document.createElement('div');
+  chk.className = 'wk-chk';
+  chk.innerHTML = '<span class="wk-tick">✓</span>';
+  chk.onclick = () => { chk.classList.toggle('on'); card.classList.toggle('done'); updateWkSummary(); };
+
+  // Info
+  const info = document.createElement('div');
+  info.className = 'wk-info';
+  info.innerHTML = `<div class="wk-nm">${ex.name}</div><div class="wk-sb">${ex.sets} séries · ${ex.reps}${ex.unit === 'kg' ? ' reps' : ex.unit ? ' ' + ex.unit : ''}</div>`;
+
+  row.appendChild(chk);
+  row.appendChild(info);
+
+  // Right: weight + set dots
+  const right = document.createElement('div');
+  right.className = 'wk-right';
+
+  if (ex.unit === 'kg' || ex.unit === '') {
+    const kgWrap = document.createElement('div');
+    kgWrap.className = 'wk-kg';
+    // Pre-fill with last used weight if available
+    const lastWeight = getLastWeight(ex.name);
+    kgWrap.innerHTML = `<input type="number" placeholder="${lastWeight || '0'}" id="wk-weight-${ei}" min="0" step="0.5" /><span class="wk-kg-unit">kg</span>`;
+    right.appendChild(kgWrap);
+  }
+
+  if (ex.sets > 0) {
+    const dots = document.createElement('div');
+    dots.className = 'wk-dots';
+    const restSec = ex.unit === 's' ? 30 : 90; // default rest
+    for (let si = 0; si < ex.sets; si++) {
+      const d = document.createElement('div');
+      d.className = 'wk-d';
+      d.textContent = si + 1;
+      d.onclick = (e) => {
+        e.stopPropagation();
+        d.classList.toggle('on');
+        if (d.classList.contains('on')) goWkTimer(id, restSec);
+      };
+      dots.appendChild(d);
+    }
+    right.appendChild(dots);
+  }
+
+  row.appendChild(right);
+  card.appendChild(row);
+
+  // Timer bar
+  if (ex.sets > 0) {
+    const restSec = ex.unit === 's' ? 30 : 90;
+    const tb = document.createElement('div');
+    tb.className = 'wk-tbar';
+    tb.id = 'wktb-' + id;
+    const tn = document.createElement('span');
+    tn.className = 'wk-tnum';
+    tn.id = 'wktn-' + id;
+    tn.textContent = restSec + 's';
+    const pg = document.createElement('div');
+    pg.className = 'wk-prog';
+    const fl = document.createElement('div');
+    fl.className = 'wk-fill';
+    fl.id = 'wkfl-' + id;
+    fl.style.width = '100%';
+    pg.appendChild(fl);
+    const b1 = document.createElement('button');
+    b1.className = 'wk-btn';
+    b1.textContent = 'Go';
+    b1.onclick = () => goWkTimer(id, restSec);
+    const b2 = document.createElement('button');
+    b2.className = 'wk-btn';
+    b2.textContent = '↺';
+    b2.onclick = () => resetWkTimer(id, restSec);
+    tb.appendChild(tn); tb.appendChild(pg); tb.appendChild(b1); tb.appendChild(b2);
+    card.appendChild(tb);
+    wkState.timers[id] = { dur: restSec, rem: restSec, iv: null, on: false };
+  }
+
+  return card;
+}
+
+function goWkTimer(id, dur) {
+  const t = wkState.timers[id];
+  if (!t) return;
+  document.getElementById('wktb-' + id).className = 'wk-tbar show';
+  if (t.on) { clearInterval(t.iv); t.on = false; document.getElementById('wktn-' + id).className = 'wk-tnum'; return; }
+  if (t.rem <= 0) t.rem = dur;
+  t.on = true;
+  document.getElementById('wktn-' + id).className = 'wk-tnum run';
+  t.iv = setInterval(() => {
+    t.rem--;
+    const tn = document.getElementById('wktn-' + id);
+    const fl = document.getElementById('wkfl-' + id);
+    if (!tn || !fl) { clearInterval(t.iv); return; }
+    tn.textContent = t.rem + 's';
+    fl.style.width = Math.round(t.rem / t.dur * 100) + '%';
+    if (t.rem <= 0) { clearInterval(t.iv); t.on = false; tn.className = 'wk-tnum end'; tn.textContent = 'GO !'; fl.style.width = '0%'; }
+  }, 1000);
+}
+
+function resetWkTimer(id, dur) {
+  const t = wkState.timers[id];
+  if (!t) return;
+  clearInterval(t.iv); t.on = false; t.rem = dur;
+  const tn = document.getElementById('wktn-' + id);
+  const fl = document.getElementById('wkfl-' + id);
+  if (tn) { tn.className = 'wk-tnum'; tn.textContent = dur + 's'; }
+  if (fl) fl.style.width = '100%';
+}
+
+function updateWkSummary() {
+  document.getElementById('wk-done').textContent = document.querySelectorAll('.wk-chk.on').length;
+  document.getElementById('wk-total').textContent = document.querySelectorAll('.wk-card').length;
+}
+
+function getLastWeight(exName) {
+  for (let i = state.sessions.length - 1; i >= 0; i--) {
+    const ex = state.sessions[i].exercises?.find(e => e.name === exName);
+    if (ex) {
+      const best = ex.sets?.reduce((b, s) => (s.weight || 0) > (b.weight || 0) ? s : b, {});
+      if (best?.weight) return best.weight;
+    }
+  }
+  return null;
+}
+
+function backToSeanceList() {
+  // Stop all timers
+  Object.values(wkState.timers).forEach(t => clearInterval(t.iv));
+  wkState.timers = {};
+  document.getElementById('seance-workout-view').style.display = 'none';
+  document.getElementById('seance-list-view').style.display = 'block';
+}
+
+function saveWorkoutInline() {
+  const prog = getAllPrograms().find(p => p.id === wkState.programId);
+  if (!prog) return;
+  const day = prog.days[wkState.dayIndex];
+  const date = document.getElementById('wk-date').value;
+  const duration = parseInt(document.getElementById('wk-duration').value) || 0;
+  const note = document.getElementById('wk-note').value;
+
+  let totalVolume = 0;
+  const exercises = day.exercises.map((ex, ei) => {
+    const weight = parseFloat(document.getElementById(`wk-weight-${ei}`)?.value) || 0;
+    const doneCount = document.querySelectorAll(`#wkcard-${ei} .wk-d.on`).length;
+    const sets = Array.from({ length: ex.sets }, (_, si) => {
+      const done = si < doneCount;
+      const reps = parseInt(ex.reps) || 0;
+      totalVolume += done ? reps * weight : 0;
+      return { reps, weight, rpe: 0, done };
+    });
+    return { name: ex.name, sets };
+  });
+
+  const session = {
+    id: Date.now().toString(), date, duration, note,
+    programId: wkState.programId, programName: wkState.programName,
+    dayName: wkState.dayName, exercises, totalVolume: Math.round(totalVolume),
+  };
+  state.sessions.push(session);
+  saveState();
+
+  // Stop timers and go back
+  Object.values(wkState.timers).forEach(t => clearInterval(t.iv));
+  backToSeanceList();
+  showNotification('✅ Séance sauvegardée !');
+  renderDashboard();
+}
+
+// ============================================================
 //  SPORT — SÉANCE DU JOUR
 // ============================================================
 function renderSeanceTab() {
   const prog = getActiveProgram();
   const cont = document.getElementById('seance-content');
+  document.getElementById('seance-list-view').style.display = 'block';
+  document.getElementById('seance-workout-view').style.display = 'none';
   if (!prog) {
     cont.innerHTML = `<div class="section"><div class="empty-state"><div class="emoji">📋</div><p>Aucun programme actif.<br>Va dans <strong>Programmes</strong> pour en choisir un.</p></div></div>`;
     return;
@@ -877,7 +1200,7 @@ function renderSeanceTab() {
   cont.innerHTML = `
     <div class="alert alert-info">Programme : <strong>${prog.name}</strong></div>
     <div class="programs-grid">${prog.days.map((d, i) => `
-      <div class="program-card" onclick="startSessionForDay('${prog.id}', ${i})">
+      <div class="program-card" onclick="startWorkoutInline('${prog.id}', ${i})">
         <h3>${d.name}</h3>
         <p>${d.exercises.length} exercices</p>
         <ul style="list-style:none; margin-bottom:12px;">${d.exercises.slice(0,4).map(e => `<li style="font-size:0.78rem; color:var(--muted); padding:2px 0;">· ${e.name}</li>`).join('')}${d.exercises.length > 4 ? `<li style="font-size:0.78rem; color:var(--muted);">+${d.exercises.length-4} autres…</li>` : ''}</ul>
@@ -1514,9 +1837,29 @@ function clearCoachChat() {
 }
 
 // ============================================================
+//  THEME
+// ============================================================
+function toggleTheme(input) {
+  const isLight = input.checked;
+  document.documentElement.classList.toggle('light', isLight);
+  document.getElementById('theme-label').textContent = isLight ? '☀️ Clair' : '🌙 Sombre';
+  DB.set('theme', isLight ? 'light' : 'dark');
+}
+
+function initTheme() {
+  const saved = DB.get('theme', 'dark');
+  const isLight = saved === 'light';
+  document.documentElement.classList.toggle('light', isLight);
+  const input = document.getElementById('theme-toggle-input');
+  if (input) input.checked = isLight;
+  document.getElementById('theme-label').textContent = isLight ? '☀️ Clair' : '🌙 Sombre';
+}
+
+// ============================================================
 //  INIT
 // ============================================================
 document.addEventListener('DOMContentLoaded', () => {
+  initTheme();
   renderDashboard();
 });
 </script>
