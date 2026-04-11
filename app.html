@@ -182,6 +182,21 @@
     .tooltip { position: relative; }
     .tooltip:hover::after { content: attr(data-tip); position: absolute; bottom: 110%; left: 50%; transform: translateX(-50%); background: #333; color: #fff; padding: 4px 8px; border-radius: 4px; font-size: 0.72rem; white-space: nowrap; z-index: 50; }
 
+    /* COACH CHAT */
+    .coach-msg { display:flex; gap:10px; align-items:flex-start; }
+    .coach-msg-user { flex-direction:row-reverse; }
+    .coach-avatar { width:34px; height:34px; border-radius:50%; display:flex; align-items:center; justify-content:center; font-size:1.1rem; flex-shrink:0; background:var(--surface2); border:1px solid var(--border); }
+    .coach-msg-user .coach-avatar { background:#6c63ff22; border-color:var(--accent); }
+    .coach-bubble { background:var(--surface2); border:1px solid var(--border); border-radius:12px; padding:12px 16px; font-size:0.88rem; line-height:1.6; max-width:85%; white-space:pre-wrap; word-break:break-word; }
+    .coach-msg-user .coach-bubble { background:#6c63ff18; border-color:#6c63ff44; }
+    .coach-bubble code { background:var(--surface); padding:1px 5px; border-radius:4px; font-family:monospace; font-size:0.82rem; }
+    .coach-bubble strong { color:var(--text); }
+    .coach-typing { display:inline-flex; gap:4px; align-items:center; padding:4px 0; }
+    .coach-typing span { width:6px; height:6px; border-radius:50%; background:var(--muted); animation:typing 1.2s infinite; }
+    .coach-typing span:nth-child(2) { animation-delay:0.2s; }
+    .coach-typing span:nth-child(3) { animation-delay:0.4s; }
+    @keyframes typing { 0%,60%,100%{opacity:0.3;transform:translateY(0)} 30%{opacity:1;transform:translateY(-4px)} }
+
     /* RESPONSIVE */
     @media (max-width: 768px) {
       .sidebar { width: 60px; }
@@ -211,6 +226,9 @@
   <div class="nav-item" onclick="showPage('sommeil')">
     <span class="icon">😴</span><span>Sommeil</span>
     <span class="nav-badge">Bientôt</span>
+  </div>
+  <div class="nav-item" onclick="showPage('coach')">
+    <span class="icon">🤖</span><span>Sport AI</span>
   </div>
   <div class="nav-section">Organisation</div>
   <div class="nav-item" onclick="showPage('objectifs')">
@@ -332,6 +350,99 @@
   </div>
 
   <!-- ===== PLACEHOLDERS ===== -->
+  <!-- ===== SPORT AI COACH ===== -->
+  <div class="page" id="page-coach">
+    <div class="page-header">
+      <h1>🤖 Sport AI</h1>
+      <p>Ton coach personnel propulsé par Claude — Projet <strong>Sport</strong></p>
+    </div>
+
+    <div id="coach-api-warning" style="display:none;" class="alert" style="background:#ff658422; border:1px solid #ff658444; color:var(--accent2); padding:12px 16px; border-radius:8px; margin-bottom:16px;">
+      ⚠️ Clé API manquante. Lance le serveur avec : <code style="background:var(--surface2); padding:2px 6px; border-radius:4px;">ANTHROPIC_API_KEY=sk-... node server.js</code>
+    </div>
+
+    <div style="display:grid; grid-template-columns: 1fr 280px; gap:20px; height:calc(100vh - 200px);">
+
+      <!-- CHAT -->
+      <div class="section" style="display:flex; flex-direction:column; padding:0; overflow:hidden;">
+        <div style="padding:16px 20px; border-bottom:1px solid var(--border); display:flex; align-items:center; justify-content:space-between;">
+          <div style="display:flex; align-items:center; gap:10px;">
+            <div style="width:10px; height:10px; border-radius:50%; background:var(--green);" id="coach-status-dot"></div>
+            <span style="font-weight:600; font-size:0.95rem;">Chat avec Sport AI</span>
+            <span class="badge badge-blue" style="font-size:0.7rem;">claude-opus-4-6</span>
+          </div>
+          <div style="display:flex; gap:8px;">
+            <label style="display:flex; align-items:center; gap:6px; font-size:0.8rem; color:var(--muted); cursor:pointer;">
+              <input type="checkbox" id="coach-include-data" checked style="width:auto; padding:0;" />
+              Inclure mes données sport
+            </label>
+            <button class="btn btn-secondary btn-sm" onclick="clearCoachChat()">Effacer</button>
+          </div>
+        </div>
+
+        <!-- MESSAGES -->
+        <div id="coach-messages" style="flex:1; overflow-y:auto; padding:20px; display:flex; flex-direction:column; gap:16px;">
+          <div class="coach-msg coach-msg-assistant">
+            <div class="coach-avatar">💪</div>
+            <div class="coach-bubble">
+              Salut Hedayat ! Je suis ton coach Sport AI, propulsé par Claude Opus. Je connais tous tes programmes et je peux analyser tes entraînements.<br><br>
+              Comment puis-je t'aider aujourd'hui ? Tu peux me poser des questions sur :<br>
+              • Tes séances et ta progression<br>
+              • Des conseils techniques sur les exercices<br>
+              • L'optimisation de ton programme<br>
+              • La nutrition et la récupération
+            </div>
+          </div>
+        </div>
+
+        <!-- INPUT -->
+        <div style="padding:16px 20px; border-top:1px solid var(--border);">
+          <div style="display:flex; gap:10px; align-items:flex-end;">
+            <textarea id="coach-input" placeholder="Pose une question à ton coach..." rows="2"
+              style="flex:1; resize:none; line-height:1.5;"
+              onkeydown="if(event.key==='Enter' && !event.shiftKey){event.preventDefault(); sendCoachMessage();}"></textarea>
+            <button class="btn btn-primary" onclick="sendCoachMessage()" id="coach-send-btn" style="height:46px; white-space:nowrap;">
+              Envoyer ↵
+            </button>
+          </div>
+          <p style="font-size:0.72rem; color:var(--muted); margin-top:6px;">Entrée pour envoyer · Shift+Entrée pour saut de ligne</p>
+        </div>
+      </div>
+
+      <!-- PANNEAU DROIT -->
+      <div style="display:flex; flex-direction:column; gap:16px; overflow-y:auto;">
+
+        <!-- SUGGESTIONS RAPIDES -->
+        <div class="section">
+          <div class="section-title">⚡ Actions rapides</div>
+          <div style="display:flex; flex-direction:column; gap:8px;">
+            <button class="btn btn-secondary" style="text-align:left; justify-content:flex-start; font-size:0.82rem;" onclick="sendQuickMessage('Analyse mes dernières séances et dis-moi comment j\'évolue.')">📊 Analyser ma progression</button>
+            <button class="btn btn-secondary" style="text-align:left; justify-content:flex-start; font-size:0.82rem;" onclick="sendQuickMessage('Quel programme me recommandes-tu en ce moment selon mes données ?')">🏋️ Quel programme choisir ?</button>
+            <button class="btn btn-secondary" style="text-align:left; justify-content:flex-start; font-size:0.82rem;" onclick="sendQuickMessage('Donne-moi un plan de récupération optimale pour cette semaine.')">😴 Plan de récupération</button>
+            <button class="btn btn-secondary" style="text-align:left; justify-content:flex-start; font-size:0.82rem;" onclick="sendQuickMessage('Comment optimiser ma nutrition pour mes entraînements ?')">🥗 Nutrition sportive</button>
+            <button class="btn btn-secondary" style="text-align:left; justify-content:flex-start; font-size:0.82rem;" onclick="sendQuickMessage('Estime mon 1RM sur les exercices principaux d\'après mes séances.')">💯 Calculer mon 1RM</button>
+            <button class="btn btn-secondary" style="text-align:left; justify-content:flex-start; font-size:0.82rem;" onclick="sendQuickMessage('Donne-moi un échauffement complet avant ma séance.')">🔥 Routine d\'échauffement</button>
+          </div>
+        </div>
+
+        <!-- INFOS CONTEXTE -->
+        <div class="section">
+          <div class="section-title">📋 Contexte envoyé</div>
+          <div id="coach-context-preview" style="font-size:0.78rem; color:var(--muted); line-height:1.6;"></div>
+        </div>
+
+        <!-- HISTORIQUE SESSION -->
+        <div class="section">
+          <div class="section-title">💬 Session</div>
+          <div id="coach-session-info" style="font-size:0.78rem; color:var(--muted);">
+            <span id="coach-msg-count">0 messages</span><br>
+            <span id="coach-token-est"></span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
   <div class="page" id="page-nutrition">
     <div class="page-header"><h1>🥗 Nutrition</h1><p>Module en cours de développement</p></div>
     <div class="section">
@@ -608,6 +719,7 @@ function showPage(name) {
   });
   if (name === 'dashboard') renderDashboard();
   if (name === 'sport') renderSport();
+  if (name === 'coach') { initCoachPage(); updateCoachContextPreview(); }
 }
 
 function showSportTab(tab) {
@@ -1217,6 +1329,188 @@ function showNotification(msg) {
   n.textContent = msg;
   document.body.appendChild(n);
   setTimeout(() => n.remove(), 3000);
+}
+
+// ============================================================
+//  COACH IA — SPORT PROJECT
+// ============================================================
+const coachState = {
+  messages: [],    // { role: 'user'|'assistant', content: string }
+  isStreaming: false,
+};
+
+async function initCoachPage() {
+  // Check server status
+  try {
+    const r = await fetch('/api/status');
+    const data = await r.json();
+    document.getElementById('coach-status-dot').style.background = data.apiKey ? 'var(--green)' : 'var(--accent2)';
+    if (!data.apiKey) {
+      document.getElementById('coach-api-warning').style.display = 'block';
+    }
+  } catch {
+    document.getElementById('coach-status-dot').style.background = '#888';
+  }
+  updateCoachContextPreview();
+}
+
+function getCoachSessionData() {
+  if (!document.getElementById('coach-include-data')?.checked) return null;
+  const sessions = state.sessions;
+  const prog = getActiveProgram();
+  return {
+    programmeActif: prog ? { nom: prog.name, jours: prog.days.map(d => d.name) } : null,
+    totalSeances: sessions.length,
+    dernieresSeances: sessions.slice(-5).map(s => ({
+      date: s.date,
+      seance: s.dayName,
+      programme: s.programName,
+      volumeKg: s.totalVolume,
+      dureeMin: s.duration,
+      exercices: s.exercises?.map(e => ({
+        nom: e.name,
+        meilleuresSerie: e.sets?.reduce((best, set) =>
+          (set.weight || 0) > (best.weight || 0) ? set : best, {}),
+      })),
+    })),
+    recordsPersonnels: (() => {
+      const prs = {};
+      sessions.forEach(s => s.exercises?.forEach(ex => ex.sets?.forEach(set => {
+        if (set.weight > (prs[ex.name]?.poids || 0))
+          prs[ex.name] = { poids: set.weight, reps: set.reps };
+      })));
+      return prs;
+    })(),
+  };
+}
+
+function updateCoachContextPreview() {
+  const data = getCoachSessionData();
+  const el = document.getElementById('coach-context-preview');
+  if (!el) return;
+  if (!data) { el.innerHTML = '<em>Désactivé</em>'; return; }
+  el.innerHTML = `
+    Programme actif : <strong>${data.programmeActif?.nom || 'Aucun'}</strong><br>
+    Total séances : <strong>${data.totalSeances}</strong><br>
+    Dernières séances : <strong>${data.dernieresSeances.length}</strong><br>
+    Records : <strong>${Object.keys(data.recordsPersonnels).length} exercices</strong>
+  `;
+}
+
+function renderCoachMessage(role, content, isStreaming = false) {
+  const container = document.getElementById('coach-messages');
+  const div = document.createElement('div');
+  div.className = `coach-msg coach-msg-${role}`;
+  div.innerHTML = `
+    <div class="coach-avatar">${role === 'user' ? '👤' : '💪'}</div>
+    <div class="coach-bubble">${isStreaming
+      ? `<div class="coach-typing"><span></span><span></span><span></span></div>`
+      : formatCoachMessage(content)}</div>`;
+  container.appendChild(div);
+  container.scrollTop = container.scrollHeight;
+  return div;
+}
+
+function formatCoachMessage(text) {
+  return text
+    .replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;')
+    .replace(/\*\*(.*?)\*\*/g, '<strong>$1</strong>')
+    .replace(/`([^`]+)`/g, '<code>$1</code>')
+    .replace(/^• /gm, '&bull; ')
+    .replace(/\n/g, '<br>');
+}
+
+function updateCoachSessionInfo() {
+  const el = document.getElementById('coach-msg-count');
+  if (el) el.textContent = `${coachState.messages.length} messages`;
+}
+
+async function sendCoachMessage() {
+  const input = document.getElementById('coach-input');
+  const text = input.value.trim();
+  if (!text || coachState.isStreaming) return;
+
+  coachState.isStreaming = true;
+  input.value = '';
+  document.getElementById('coach-send-btn').disabled = true;
+  document.getElementById('coach-send-btn').textContent = '…';
+
+  // Add user message
+  coachState.messages.push({ role: 'user', content: text });
+  renderCoachMessage('user', text);
+  updateCoachSessionInfo();
+
+  // Show typing indicator
+  const assistantDiv = renderCoachMessage('assistant', '', true);
+  const bubble = assistantDiv.querySelector('.coach-bubble');
+
+  try {
+    const sessionData = getCoachSessionData();
+    const response = await fetch('/api/sport/chat', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ messages: coachState.messages, sessionData }),
+    });
+
+    if (!response.ok) {
+      const err = await response.json();
+      bubble.innerHTML = `<span style="color:var(--accent2);">❌ ${err.error}</span>`;
+      coachState.messages.pop();
+      return;
+    }
+
+    const reader = response.body.getReader();
+    const decoder = new TextDecoder();
+    let fullText = '';
+    bubble.innerHTML = '';
+
+    while (true) {
+      const { done, value } = await reader.read();
+      if (done) break;
+      const chunk = decoder.decode(value);
+      const lines = chunk.split('\n');
+      for (const line of lines) {
+        if (!line.startsWith('data: ')) continue;
+        const data = line.slice(6).trim();
+        if (data === '[DONE]') break;
+        try {
+          const parsed = JSON.parse(data);
+          if (parsed.error) { bubble.innerHTML = `<span style="color:var(--accent2);">❌ ${parsed.error}</span>`; return; }
+          if (parsed.text) {
+            fullText += parsed.text;
+            bubble.innerHTML = formatCoachMessage(fullText);
+            document.getElementById('coach-messages').scrollTop = 99999;
+          }
+        } catch {}
+      }
+    }
+
+    coachState.messages.push({ role: 'assistant', content: fullText });
+    updateCoachSessionInfo();
+  } catch (err) {
+    bubble.innerHTML = `<span style="color:var(--accent2);">❌ Erreur de connexion au serveur. Lance : <code>node server.js</code></span>`;
+    coachState.messages.pop();
+  } finally {
+    coachState.isStreaming = false;
+    document.getElementById('coach-send-btn').disabled = false;
+    document.getElementById('coach-send-btn').textContent = 'Envoyer ↵';
+  }
+}
+
+function sendQuickMessage(text) {
+  document.getElementById('coach-input').value = text;
+  sendCoachMessage();
+}
+
+function clearCoachChat() {
+  coachState.messages = [];
+  const container = document.getElementById('coach-messages');
+  container.innerHTML = `
+    <div class="coach-msg coach-msg-assistant">
+      <div class="coach-avatar">💪</div>
+      <div class="coach-bubble">Chat réinitialisé. Comment puis-je t'aider ?</div>
+    </div>`;
+  updateCoachSessionInfo();
 }
 
 // ============================================================
