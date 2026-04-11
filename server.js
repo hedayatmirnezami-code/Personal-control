@@ -105,6 +105,30 @@ app.post('/api/sport/chat', async (req, res) => {
 });
 
 // ============================================================
+//  ROUTE — NÉO (Engagements / Contrats)
+// ============================================================
+app.post('/api/neo/message', async (req, res) => {
+  const { systemPrompt, messages } = req.body;
+  const apiKey = process.env.ANTHROPIC_API_KEY;
+  if (!apiKey) return res.status(500).json({ error: 'ANTHROPIC_API_KEY manquant' });
+  if (!messages || !Array.isArray(messages)) return res.status(400).json({ error: 'messages requis' });
+  try {
+    const client = new Anthropic({ apiKey });
+    const response = await client.messages.create({
+      model: 'claude-opus-4-6',
+      max_tokens: 1500,
+      system: systemPrompt || '',
+      messages,
+    });
+    const text = response.content?.find(c => c.type === 'text')?.text || '';
+    res.json({ text });
+  } catch (err) {
+    console.error('Erreur NÉO API:', err.message);
+    res.status(500).json({ error: err.message });
+  }
+});
+
+// ============================================================
 //  ROUTE — STATUT
 // ============================================================
 app.get('/api/status', (req, res) => {

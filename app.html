@@ -266,6 +266,56 @@
     .coach-typing span:nth-child(3) { animation-delay:0.4s; }
     @keyframes typing { 0%,60%,100%{opacity:0.3;transform:translateY(0)} 30%{opacity:1;transform:translateY(-4px)} }
 
+    /* ===== NÉO ENGAGEMENTS ===== */
+    .neo-wrap { display:grid; grid-template-columns:260px 1fr; height:calc(100vh - 140px); border-radius:12px; border:1px solid var(--border); overflow:hidden; background:var(--surface); }
+    .neo-sidebar { border-right:1px solid var(--border); display:flex; flex-direction:column; background:var(--bg); }
+    .neo-sidebar-head { padding:14px 16px 10px; border-bottom:1px solid var(--border); }
+    .neo-sidebar-label { font-size:10px; font-weight:600; letter-spacing:.08em; color:var(--muted); text-transform:uppercase; margin-bottom:2px; }
+    .neo-sidebar-title { font-size:14px; font-weight:600; color:var(--text); }
+    .neo-total { margin-top:8px; padding:5px 10px; background:var(--surface); border-radius:6px; display:flex; justify-content:space-between; align-items:center; }
+    .neo-total span:first-child { font-size:11px; color:var(--muted); }
+    .neo-total span:last-child { font-size:12px; font-weight:600; color:var(--text); }
+    .neo-list { flex:1; overflow-y:auto; padding:8px; }
+    .neo-item { padding:8px 10px; border-radius:8px; margin-bottom:2px; border:1px solid transparent; cursor:pointer; display:flex; align-items:center; gap:8px; transition:background .15s; }
+    .neo-item:hover { background:var(--surface2); }
+    .neo-item.active { background:var(--surface2); border-color:var(--border); }
+    .neo-dot { width:8px; height:8px; border-radius:50%; flex-shrink:0; }
+    .neo-item-name { font-size:13px; font-weight:500; color:var(--text); white-space:nowrap; overflow:hidden; text-overflow:ellipsis; }
+    .neo-item-amt { font-size:11px; color:var(--muted); }
+    .neo-add-btn { margin:8px; }
+    .neo-main { display:flex; flex-direction:column; overflow:hidden; }
+    .neo-topbar { padding:14px 20px 0; border-bottom:1px solid var(--border); background:var(--surface); display:flex; align-items:flex-start; justify-content:space-between; }
+    .neo-tabs { display:flex; padding:0 20px; border-bottom:1px solid var(--border); background:var(--surface); }
+    .neo-tab { padding:8px 14px; font-size:13px; background:transparent; border:none; border-bottom:2px solid transparent; color:var(--muted); cursor:pointer; transition:color .15s; font-family:inherit; }
+    .neo-tab.active { border-bottom-color:var(--text); color:var(--text); }
+    .neo-content { flex:1; overflow-y:auto; padding:20px; }
+    .neo-form-grid { display:grid; grid-template-columns:1fr 1fr; gap:12px; margin-bottom:16px; }
+    .neo-field label { font-size:11px; color:var(--muted); display:block; margin-bottom:4px; }
+    .neo-field input, .neo-field select, .neo-field textarea { width:100%; font-size:13px; padding:6px 8px; border-radius:6px; border:1px solid var(--border); background:var(--bg); color:var(--text); box-sizing:border-box; font-family:inherit; }
+    .neo-field textarea { resize:vertical; }
+    .neo-section-title { font-size:11px; color:var(--muted); margin-bottom:8px; display:flex; align-items:center; justify-content:space-between; }
+    .neo-docs { display:flex; flex-direction:column; gap:4px; }
+    .neo-doc-row { display:flex; align-items:center; justify-content:space-between; padding:6px 10px; background:var(--surface2); border-radius:6px; border:1px solid var(--border); }
+    .neo-doc-name { font-size:12px; color:var(--text); }
+    .neo-doc-del { font-size:11px; color:var(--muted); background:transparent; border:none; cursor:pointer; }
+    .neo-docs-empty, .neo-summary-empty { padding:12px; text-align:center; border:1px dashed var(--border); border-radius:6px; font-size:12px; color:var(--muted); }
+    .neo-summary-box { padding:14px; background:var(--surface2); border-radius:8px; border:1px solid var(--border); font-size:13px; color:var(--text); line-height:1.7; white-space:pre-wrap; }
+    .neo-chat { display:flex; flex-direction:column; height:100%; }
+    .neo-messages { flex:1; display:flex; flex-direction:column; gap:12px; overflow-y:auto; padding-bottom:16px; }
+    .neo-bubble { max-width:80%; padding:10px 14px; border-radius:10px; font-size:13px; line-height:1.6; white-space:pre-wrap; border:1px solid var(--border); }
+    .neo-bubble.user { background:var(--surface2); align-self:flex-end; }
+    .neo-bubble.assistant { background:var(--surface); align-self:flex-start; }
+    .neo-chat-input-row { display:flex; gap:8px; padding-top:12px; border-top:1px solid var(--border); margin-top:auto; }
+    .neo-chat-input-row input { flex:1; font-size:13px; padding:8px 12px; border-radius:8px; border:1px solid var(--border); background:var(--bg); color:var(--text); font-family:inherit; }
+    .neo-suggestions { display:flex; flex-wrap:wrap; gap:8px; justify-content:center; margin-bottom:20px; }
+    .neo-suggestion { font-size:12px; padding:6px 12px; border:1px solid var(--border); border-radius:20px; background:transparent; color:var(--muted); cursor:pointer; }
+    .neo-suggestion:hover { color:var(--text); border-color:var(--accent); }
+    .neo-modal-overlay { position:fixed; inset:0; background:rgba(0,0,0,.5); display:flex; align-items:center; justify-content:center; z-index:1000; }
+    .neo-modal { background:var(--surface); border-radius:12px; border:1px solid var(--border); padding:24px; width:360px; display:flex; flex-direction:column; gap:14px; }
+    .neo-modal-title { font-size:16px; font-weight:600; color:var(--text); }
+    .neo-modal-actions { display:flex; gap:8px; justify-content:flex-end; }
+    html.light .neo-field input, html.light .neo-field select, html.light .neo-field textarea, html.light .neo-chat-input-row input { background:var(--bg); }
+
     /* RESPONSIVE */
     @media (max-width: 768px) {
       .sidebar { width: 60px; }
@@ -307,6 +357,9 @@
   <div class="nav-item" onclick="showPage('finances')">
     <span class="icon">💰</span><span>Finances</span>
     <span class="nav-badge">Bientôt</span>
+  </div>
+  <div class="nav-item" onclick="showPage('engagements')">
+    <span class="icon">🛡️</span><span>Engagements</span>
   </div>
   <div class="sidebar-bottom">
     <div class="theme-toggle">
@@ -572,6 +625,63 @@
     <div class="page-header"><h1>💰 Finances</h1><p>Module en cours de développement</p></div>
     <div class="section">
       <div class="empty-state"><div class="emoji">🚧</div><p>Ce module arrive bientôt !</p></div>
+    </div>
+  </div>
+
+  <!-- ===== NÉO ENGAGEMENTS ===== -->
+  <div class="page" id="page-engagements">
+    <div class="page-header" style="margin-bottom:16px;">
+      <h1>🛡️ Engagements</h1>
+      <p>Contrats, assurances et abonnements — assisté par NÉO</p>
+    </div>
+    <div class="neo-wrap">
+      <!-- sidebar -->
+      <div class="neo-sidebar">
+        <div class="neo-sidebar-head">
+          <div class="neo-sidebar-label">NÉO</div>
+          <div class="neo-sidebar-title">Mes engagements</div>
+          <div class="neo-total">
+            <span>Total / mois</span>
+            <span id="neo-total-val">0 €</span>
+          </div>
+        </div>
+        <div class="neo-list" id="neo-list"></div>
+        <div class="neo-add-btn">
+          <button class="btn btn-secondary" style="width:100%;font-size:13px;" onclick="neoOpenAddModal()">+ Ajouter un engagement</button>
+        </div>
+      </div>
+      <!-- main -->
+      <div class="neo-main" id="neo-main">
+        <div style="display:flex;align-items:center;justify-content:center;height:100%;color:var(--muted);font-size:14px;">
+          Sélectionne un engagement
+        </div>
+      </div>
+    </div>
+    <!-- hidden file input -->
+    <input type="file" id="neo-file-input" multiple accept=".pdf,image/*" style="display:none" onchange="neoHandleFiles(this)" />
+    <!-- add modal -->
+    <div id="neo-modal" style="display:none;" class="neo-modal-overlay">
+      <div class="neo-modal">
+        <div class="neo-modal-title">Nouvel engagement</div>
+        <div class="neo-field"><label>Nom *</label><input id="neo-new-name" placeholder="ex : Prévoyance CIPAV, Spotify…" /></div>
+        <div class="neo-field"><label>Fournisseur</label><input id="neo-new-provider" placeholder="ex : GAN, Harmonie…" /></div>
+        <div class="neo-field"><label>Catégorie</label>
+          <select id="neo-new-cat">
+            <option value="mutuelle">Mutuelle / Santé</option>
+            <option value="retraite">Retraite / Madelin</option>
+            <option value="prevoyance">Prévoyance</option>
+            <option value="assurance">Assurance</option>
+            <option value="cotisation">Cotisation / Organisme</option>
+            <option value="abonnement">Abonnement pro</option>
+            <option value="autre" selected>Autre</option>
+          </select>
+        </div>
+        <div class="neo-field"><label>Montant mensuel (€)</label><input id="neo-new-amt" type="number" placeholder="0" /></div>
+        <div class="neo-modal-actions">
+          <button class="btn btn-secondary" onclick="neoCloseAddModal()">Annuler</button>
+          <button class="btn btn-primary" onclick="neoAddEntity()">Créer</button>
+        </div>
+      </div>
     </div>
   </div>
 </main>
@@ -850,6 +960,7 @@ function showPage(name) {
   if (name === 'dashboard') renderDashboard();
   if (name === 'sport') renderSport();
   if (name === 'coach') { initCoachPage(); updateCoachContextPreview(); }
+  if (name === 'engagements') initNeo();
 }
 
 function showSportTab(tab) {
@@ -1923,6 +2034,396 @@ document.addEventListener('DOMContentLoaded', () => {
   initTheme();
   renderDashboard();
 });
+
+// ============================================================
+//  NÉO — MODULE ENGAGEMENTS
+// ============================================================
+const NEO_CATEGORIES = [
+  { id: 'mutuelle',    label: 'Mutuelle / Santé',          color: '#1D9E75' },
+  { id: 'retraite',   label: 'Retraite / Madelin',         color: '#378ADD' },
+  { id: 'prevoyance', label: 'Prévoyance',                 color: '#D85A30' },
+  { id: 'assurance',  label: 'Assurance',                  color: '#BA7517' },
+  { id: 'cotisation', label: 'Cotisation / Organisme',     color: '#7F77DD' },
+  { id: 'abonnement', label: 'Abonnement pro',             color: '#D4537E' },
+  { id: 'autre',      label: 'Autre',                      color: '#888780' },
+];
+
+const NEO_INITIAL = [
+  { id: '1', name: 'Mutuelle', provider: '', category: 'mutuelle', monthlyAmount: 0, notes: '', summary: '', files: [], chatHistory: [] },
+  { id: '2', name: 'GAN Retraite Madelin', provider: 'GAN', category: 'retraite', monthlyAmount: 0, notes: '', summary: '', files: [], chatHistory: [] },
+];
+
+let neoState = {
+  entities: null,
+  selectedId: null,
+  activeTab: 'fiche',
+  isChatLoading: false,
+  isSummarizing: false,
+};
+
+function neoGetEntities() {
+  if (!neoState.entities) {
+    const saved = DB.get('neo_entities', null);
+    neoState.entities = saved ? saved : JSON.parse(JSON.stringify(NEO_INITIAL));
+    if (neoState.entities.length > 0) neoState.selectedId = neoState.entities[0].id;
+  }
+  return neoState.entities;
+}
+
+function neoSave() {
+  DB.set('neo_entities', neoState.entities);
+}
+
+function neoSelected() {
+  return neoState.entities?.find(e => e.id === neoState.selectedId) || null;
+}
+
+function neoUpdate(id, changes) {
+  neoState.entities = neoState.entities.map(e => e.id === id ? { ...e, ...changes } : e);
+  neoSave();
+  neoRender();
+}
+
+function neoSystemPrompt(entity) {
+  const cat = NEO_CATEGORIES.find(c => c.id === entity.category);
+  return `Tu es NÉO, un assistant expert en contrats, assurances et engagements financiers français.
+Tu réponds aux questions sur le contrat ou abonnement suivant :
+
+Nom : ${entity.name}
+Fournisseur : ${entity.provider || 'Non renseigné'}
+Catégorie : ${cat?.label || entity.category}
+Montant mensuel : ${entity.monthlyAmount ? entity.monthlyAmount + ' €' : 'Non renseigné'}
+Notes : ${entity.notes || 'Aucune'}
+Résumé existant : ${entity.summary || 'Aucun'}
+
+${entity.files?.length > 0 ? 'Documents disponibles : ' + entity.files.map(f => f.name).join(', ') : 'Aucun document uploadé.'}
+
+Règles :
+- Réponds en français, de façon concise et pratique
+- Si on te pose une question sur les garanties, remboursements, clauses ou conditions : réponds précisément
+- Si l'info n'est pas dans les documents fournis : dis-le clairement
+- Pas de blabla, pas de généralités — sois utile et direct
+- Si tu détectes un angle mort ou une opportunité d'optimisation, signale-le`;
+}
+
+// ---- RENDER ----
+function neoRender() {
+  const entities = neoGetEntities();
+  const total = entities.reduce((s, e) => s + (e.monthlyAmount || 0), 0);
+  const totalEl = document.getElementById('neo-total-val');
+  if (totalEl) totalEl.textContent = total.toFixed(0) + ' €';
+  neoRenderList();
+  neoRenderMain();
+}
+
+function neoRenderList() {
+  const list = document.getElementById('neo-list');
+  if (!list) return;
+  const entities = neoGetEntities();
+  list.innerHTML = entities.map(e => {
+    const cat = NEO_CATEGORIES.find(c => c.id === e.category);
+    const active = e.id === neoState.selectedId ? 'active' : '';
+    return `<div class="neo-item ${active}" onclick="neoSelect('${e.id}')">
+      <div class="neo-dot" style="background:${cat?.color || '#888'}"></div>
+      <div style="flex:1;min-width:0;">
+        <div class="neo-item-name">${e.name}</div>
+        <div class="neo-item-amt">${e.monthlyAmount ? e.monthlyAmount + ' €/mois' : 'Montant non renseigné'}</div>
+      </div>
+    </div>`;
+  }).join('');
+}
+
+function neoRenderMain() {
+  const main = document.getElementById('neo-main');
+  if (!main) return;
+  const entity = neoSelected();
+  if (!entity) {
+    main.innerHTML = `<div style="display:flex;align-items:center;justify-content:center;height:100%;color:var(--muted);font-size:14px;">Sélectionne un engagement</div>`;
+    return;
+  }
+  const cat = NEO_CATEGORIES.find(c => c.id === entity.category);
+
+  main.innerHTML = `
+    <!-- topbar -->
+    <div class="neo-topbar">
+      <div>
+        <div style="display:flex;align-items:center;gap:6px;margin-bottom:2px;">
+          <div style="width:9px;height:9px;border-radius:50%;background:${cat?.color}"></div>
+          <span style="font-size:11px;color:var(--muted)">${cat?.label || ''}</span>
+        </div>
+        <div style="font-size:17px;font-weight:600;color:var(--text)">${entity.name}</div>
+        ${entity.provider ? `<div style="font-size:12px;color:var(--muted);margin-top:2px;">${entity.provider}</div>` : ''}
+      </div>
+      <div style="display:flex;gap:8px;align-items:center;padding-bottom:14px;">
+        ${entity.monthlyAmount > 0 ? `<div style="padding:4px 10px;background:var(--surface2);border-radius:6px;font-size:13px;font-weight:600;color:var(--text)">${entity.monthlyAmount} €/mois</div>` : ''}
+        <button class="btn btn-secondary btn-sm" onclick="neoDeleteEntity('${entity.id}')">Supprimer</button>
+      </div>
+    </div>
+    <!-- tabs -->
+    <div class="neo-tabs">
+      <button class="neo-tab ${neoState.activeTab === 'fiche' ? 'active' : ''}" onclick="neoSetTab('fiche')">Fiche</button>
+      <button class="neo-tab ${neoState.activeTab === 'chat' ? 'active' : ''}" onclick="neoSetTab('chat')">Chat NÉO</button>
+    </div>
+    <!-- content -->
+    <div class="neo-content" id="neo-tab-content"></div>
+  `;
+  neoRenderTab();
+}
+
+function neoRenderTab() {
+  const content = document.getElementById('neo-tab-content');
+  if (!content) return;
+  if (neoState.activeTab === 'fiche') neoRenderFiche(content);
+  else neoRenderChat(content);
+}
+
+function neoRenderFiche(container) {
+  const e = neoSelected();
+  if (!e) return;
+  const catOptions = NEO_CATEGORIES.map(c => `<option value="${c.id}" ${c.id === e.category ? 'selected' : ''}>${c.label}</option>`).join('');
+  const filesHtml = e.files?.length
+    ? e.files.map(f => `<div class="neo-doc-row"><span class="neo-doc-name">📄 ${f.name}</span><button class="neo-doc-del" onclick="neoRemoveFile('${e.id}','${f.name}')">✕</button></div>`).join('')
+    : `<div class="neo-docs-empty">Aucun document — upload un PDF ou image pour enrichir le chat</div>`;
+
+  const summaryHtml = e.summary
+    ? `<div class="neo-summary-box">${e.summary}</div>`
+    : `<div class="neo-summary-empty">Clique sur "Générer" — avec ou sans document</div>`;
+
+  container.innerHTML = `
+    <div style="max-width:700px;">
+      <div class="neo-form-grid">
+        <div class="neo-field"><label>Nom</label><input value="${e.name}" oninput="neoPatch('name',this.value)" /></div>
+        <div class="neo-field"><label>Fournisseur</label><input value="${e.provider}" placeholder="ex : GAN, Harmonie…" oninput="neoPatch('provider',this.value)" /></div>
+        <div class="neo-field"><label>Catégorie</label><select onchange="neoPatch('category',this.value)">${catOptions}</select></div>
+        <div class="neo-field"><label>Montant mensuel (€)</label><input type="number" value="${e.monthlyAmount || ''}" placeholder="0" oninput="neoPatch('monthlyAmount',parseFloat(this.value)||0)" /></div>
+      </div>
+      <div class="neo-field" style="margin-bottom:16px;">
+        <label>Notes personnelles</label>
+        <textarea rows="3" placeholder="Contexte, rappels, questions à poser…" oninput="neoPatch('notes',this.value)">${e.notes}</textarea>
+      </div>
+      <div style="margin-bottom:16px;">
+        <div class="neo-section-title">
+          <span>Documents (CG, contrat, attestation…)</span>
+          <button class="btn btn-secondary btn-sm" onclick="document.getElementById('neo-file-input').click()">+ Ajouter</button>
+        </div>
+        <div class="neo-docs">${filesHtml}</div>
+      </div>
+      <div>
+        <div class="neo-section-title">
+          <span>Résumé NÉO</span>
+          <button class="btn btn-secondary btn-sm" onclick="neoGenerateSummary()" ${neoState.isSummarizing ? 'disabled' : ''}>
+            ${neoState.isSummarizing ? 'Génération…' : e.summary ? 'Regénérer' : 'Générer ↗'}
+          </button>
+        </div>
+        ${summaryHtml}
+      </div>
+    </div>`;
+}
+
+function neoRenderChat(container) {
+  const e = neoSelected();
+  if (!e) return;
+  const history = e.chatHistory || [];
+  const suggestions = ["Qu'est-ce que ça couvre exactement ?", "Quelles sont les exclusions ?", "Comment résilier ?", "Est-ce que je suis bien couvert ?"];
+
+  const msgs = history.map(m => `<div class="neo-bubble ${m.role}">${m.content}</div>`).join('');
+  const suggs = history.length === 0
+    ? `<div style="text-align:center;padding:16px 0;">
+        <div style="font-size:13px;color:var(--muted);margin-bottom:12px;">Pose une question sur <strong>${e.name}</strong></div>
+        <div class="neo-suggestions">${suggestions.map(q => `<button class="neo-suggestion" onclick="neoSetInput(\`${q}\`)">${q}</button>`).join('')}</div>
+      </div>`
+    : '';
+  const loadingBubble = neoState.isChatLoading ? `<div class="neo-bubble assistant" style="color:var(--muted);">NÉO réfléchit…</div>` : '';
+
+  container.innerHTML = `
+    <div class="neo-chat" style="height:calc(100vh - 310px);">
+      <div class="neo-messages" id="neo-messages">
+        ${suggs}${msgs}${loadingBubble}
+        <div id="neo-chat-end"></div>
+      </div>
+      <div class="neo-chat-input-row">
+        <input id="neo-chat-input" placeholder="Question sur ${e.name}…"
+          onkeydown="if(event.key==='Enter')neoSendChat()" />
+        <button class="btn btn-primary" onclick="neoSendChat()" ${neoState.isChatLoading ? 'disabled' : ''}>Envoyer</button>
+      </div>
+    </div>`;
+
+  // scroll to bottom
+  requestAnimationFrame(() => document.getElementById('neo-chat-end')?.scrollIntoView());
+}
+
+// ---- ACTIONS ----
+function neoSelect(id) {
+  neoState.selectedId = id;
+  neoState.activeTab = 'fiche';
+  neoRender();
+}
+
+function neoSetTab(tab) {
+  neoState.activeTab = tab;
+  neoRenderTab();
+  // re-render tabs highlight
+  document.querySelectorAll('.neo-tab').forEach(t => {
+    t.classList.toggle('active', t.textContent.toLowerCase().includes(tab === 'fiche' ? 'fiche' : 'chat'));
+  });
+}
+
+function neoPatch(field, value) {
+  const e = neoSelected();
+  if (!e) return;
+  neoState.entities = neoState.entities.map(en => en.id === e.id ? { ...en, [field]: value } : en);
+  neoSave();
+  // update sidebar total if monthlyAmount changed
+  if (field === 'monthlyAmount' || field === 'name') neoRenderList();
+  const totalEl = document.getElementById('neo-total-val');
+  if (totalEl) {
+    const total = neoState.entities.reduce((s, en) => s + (en.monthlyAmount || 0), 0);
+    totalEl.textContent = total.toFixed(0) + ' €';
+  }
+}
+
+function neoSetInput(text) {
+  const input = document.getElementById('neo-chat-input');
+  if (input) { input.value = text; input.focus(); }
+}
+
+async function neoHandleFiles(input) {
+  const e = neoSelected();
+  if (!e || !input.files.length) return;
+  const processed = await Promise.all(Array.from(input.files).map(f => new Promise(res => {
+    const reader = new FileReader();
+    reader.onload = () => res({ name: f.name, base64: reader.result.split(',')[1], type: f.type });
+    reader.readAsDataURL(f);
+  })));
+  neoUpdate(e.id, { files: [...(e.files || []), ...processed] });
+  input.value = '';
+}
+
+function neoRemoveFile(entityId, fileName) {
+  const e = neoState.entities.find(en => en.id === entityId);
+  if (!e) return;
+  neoUpdate(entityId, { files: e.files.filter(f => f.name !== fileName) });
+}
+
+async function neoGenerateSummary() {
+  const e = neoSelected();
+  if (!e) return;
+  neoState.isSummarizing = true;
+  neoRenderTab();
+  try {
+    const messages = [{
+      role: 'user',
+      content: [
+        ...(e.files || []).map(f =>
+          f.type === 'application/pdf'
+            ? { type: 'document', source: { type: 'base64', media_type: 'application/pdf', data: f.base64 } }
+            : { type: 'image', source: { type: 'base64', media_type: f.type, data: f.base64 } }
+        ),
+        { type: 'text', text: `Génère un résumé structuré et pratique de ce contrat/abonnement pour "${e.name}" (${e.provider || 'fournisseur non précisé'}).
+
+Structure :
+**À quoi ça sert** : (1-2 phrases)
+**Ce que ça couvre** : (garanties/avantages clés)
+**Limites & exclusions** : (ce qui n'est pas couvert)
+**Conditions importantes** : (résiliation, délais, clauses)
+**Optimisation possible** : (1 conseil si pertinent)
+
+Si aucun document n'est fourni, base-toi sur tes connaissances générales du produit, en le précisant.` }
+      ]
+    }];
+    const res = await fetch('/api/neo/message', {
+      method: 'POST', headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ systemPrompt: neoSystemPrompt(e), messages })
+    });
+    const data = await res.json();
+    neoUpdate(e.id, { summary: data.text || '' });
+  } catch (err) {
+    console.error('NEO summary error', err);
+  }
+  neoState.isSummarizing = false;
+  neoRenderTab();
+}
+
+async function neoSendChat() {
+  const e = neoSelected();
+  if (!e) return;
+  const input = document.getElementById('neo-chat-input');
+  const text = input?.value?.trim();
+  if (!text || neoState.isChatLoading) return;
+
+  const userMsg = { role: 'user', content: text };
+  const updatedHistory = [...(e.chatHistory || []), userMsg];
+  neoState.entities = neoState.entities.map(en => en.id === e.id ? { ...en, chatHistory: updatedHistory } : en);
+  neoSave();
+  neoState.isChatLoading = true;
+  neoRenderTab();
+
+  try {
+    const apiMessages = updatedHistory.map((m, i) => {
+      if (m.role === 'user' && i === 0 && e.files?.length > 0) {
+        return { role: 'user', content: [
+          ...(e.files || []).map(f =>
+            f.type === 'application/pdf'
+              ? { type: 'document', source: { type: 'base64', media_type: 'application/pdf', data: f.base64 } }
+              : { type: 'image', source: { type: 'base64', media_type: f.type, data: f.base64 } }
+          ),
+          { type: 'text', text: m.content }
+        ]};
+      }
+      return m;
+    });
+    const res = await fetch('/api/neo/message', {
+      method: 'POST', headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ systemPrompt: neoSystemPrompt(e), messages: apiMessages })
+    });
+    const data = await res.json();
+    const reply = data.text || 'Erreur de réponse.';
+    const finalHistory = [...updatedHistory, { role: 'assistant', content: reply }];
+    neoState.entities = neoState.entities.map(en => en.id === e.id ? { ...en, chatHistory: finalHistory } : en);
+    neoSave();
+  } catch {
+    const finalHistory = [...updatedHistory, { role: 'assistant', content: "Erreur de connexion." }];
+    neoState.entities = neoState.entities.map(en => en.id === e.id ? { ...en, chatHistory: finalHistory } : en);
+    neoSave();
+  }
+  neoState.isChatLoading = false;
+  neoRenderTab();
+}
+
+function neoDeleteEntity(id) {
+  neoState.entities = neoState.entities.filter(e => e.id !== id);
+  neoSave();
+  neoState.selectedId = neoState.entities[0]?.id || null;
+  neoRender();
+}
+
+function neoOpenAddModal() { document.getElementById('neo-modal').style.display = 'flex'; }
+function neoCloseAddModal() { document.getElementById('neo-modal').style.display = 'none'; }
+
+function neoAddEntity() {
+  const name = document.getElementById('neo-new-name').value.trim();
+  if (!name) return;
+  const entity = {
+    id: Date.now().toString(),
+    name,
+    provider: document.getElementById('neo-new-provider').value.trim(),
+    category: document.getElementById('neo-new-cat').value,
+    monthlyAmount: parseFloat(document.getElementById('neo-new-amt').value) || 0,
+    notes: '', summary: '', files: [], chatHistory: [],
+  };
+  neoState.entities = [...neoGetEntities(), entity];
+  neoSave();
+  neoState.selectedId = entity.id;
+  neoCloseAddModal();
+  ['neo-new-name','neo-new-provider','neo-new-amt'].forEach(id => { const el = document.getElementById(id); if(el) el.value=''; });
+  neoRender();
+}
+
+// init when page is shown (called from showPage)
+function initNeo() {
+  neoGetEntities();
+  neoRender();
+}
 </script>
 </body>
 </html>
